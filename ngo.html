@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NGO Dashboard - V Link</title>
+  <style>
+    body { font-family: Arial; padding:20px; background:#f0f2f5; }
+    .donation-card { border:1px solid #ccc; border-radius:8px; padding:15px; margin:10px; background:white; }
+    button { margin:5px; padding:5px 10px; border:none; border-radius:5px; cursor:pointer; }
+    .accept { background:#4CAF50;color:white; }
+    .decline { background:#f44336;color:white; }
+  </style>
+</head>
+<body>
+
+<h2>Available Donations in Your Area 📦</h2>
+<div id="donationList"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
+  authDomain: "v-link-bc049.firebaseapp.com",
+  projectId: "v-link-bc049",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let ngoArea="";
+let currentUser;
+
+onAuthStateChanged(auth,user=>{
+  if(!user){ window.location.href="login.html"; return; }
+  currentUser=user;
+
+  getDoc(doc(db,"users",user.uid)).then(ngoDoc=>{
+    if(ngoDoc.exists()) ngoArea = ngoDoc.data().area.trim().toLowerCase();
+
+    const q = query(collection(db,"donations"), where("status","==","available"), where("area","==",ngoArea));
+
+    onSnapshot(q,snapshot=>{
+      const donationList = document.getElementById("donationList");
+      donationList.innerHTML="";
+      snapshot.forEach(docSnap=>{
+        const data = docSnap.data();
+        const id = docSnap.id;
+        donationList.innerHTML+=`
+          <div class="donation-card">
+            <h3>${data.foodName}</h3>
+            <p><b>Type:</b> ${data.foodType}</p>
+            <p><b>Servings:</b> ${data.servings}</p>
+            <p><b>Time:</b> ${data.timePrep}</p>
+            <p><b>Area:</b> ${data.area}</p>

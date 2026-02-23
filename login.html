@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login / Register - V Link</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background:#f0f2f5; text-align:center; }
+    h2 { color:#333; }
+    input, select, button { padding:10px; margin:5px 0; width:250px; border-radius:5px; border:1px solid #ccc; }
+    button { width:260px; background:#4CAF50; color:white; border:none; cursor:pointer; }
+    button:hover { background:#45a049; }
+    #areaDiv { display:none; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+<h2>V Link Login / Register</h2>
+
+<input type="email" id="email" placeholder="Enter Email"><br>
+<input type="password" id="password" placeholder="Enter Password"><br>
+
+<label>Select Role:</label><br>
+<select id="role" onchange="toggleAreaField()">
+  <option value="donor">Donor</option>
+  <option value="ngo">NGO</option>
+</select><br>
+
+<div id="areaDiv">
+  <input type="text" id="ngoArea" placeholder="Enter your city / area"><br>
+</div>
+
+<button onclick="register()">Register</button><br>
+<button onclick="login()">Login</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
+  authDomain: "v-link-bc049.firebaseapp.com",
+  projectId: "v-link-bc049",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.toggleAreaField = function(){
+  const role = document.getElementById("role").value;
+  document.getElementById("areaDiv").style.display = role === "ngo" ? "block" : "none";
+}
+
+window.register = async function () {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const role = document.getElementById("role").value;
+  const ngoArea = document.getElementById("ngoArea").value.trim();
+
+  if (!email || !password) { alert("Please enter email and password."); return; }
+  if (role === "ngo" && !ngoArea) { alert("NGO must enter area / city"); return; }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+    const user = userCredential.user;
+
+    await setDoc(doc(db,"users",user.uid),{
+      email: email,
+      role: role,
+      area: role==="ngo"?ngoArea.toLowerCase():""
+    });
+
+    alert("Registered successfully 🎉");
+    document.getElementById("email").value="";
+    document.getElementById("password").value="";
+    if(role==="ngo") document.getElementById("ngoArea").value="";
+
+  } catch(error){
+    alert(error.message);
+  }
+}
+
+window.login = async function () {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  if(!email || !password){ alert("Enter email/password"); return; }
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth,email,password);
+    const user = userCredential.user;
+
+    const docSnap = await getDoc(doc(db,"users",user.uid));
+    if(docSnap.exists()){
+      const role = docSnap.data().role;
+      // redirect both roles to index.html
+      window.location.href="index.html";
+    }else alert("User role not found");
+
+  } catch(error){ alert(error.message); }
+}
+</script>
+</body>
+</html>
