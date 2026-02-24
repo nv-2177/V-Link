@@ -3,44 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <title>V Link - Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial; margin:0; background:#f0f2f5; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#4facfe; color:white; }
-    header h1 { margin:0; font-size:1.8em; cursor:pointer; }
-    #profile { cursor:pointer; position:relative; }
-    #historyModal { display:none; position:absolute; top:40px; right:0; background:white; color:black; border:1px solid #ccc; padding:15px; border-radius:8px; width:300px; max-height:400px; overflow-y:auto; z-index:100; }
-    main { padding:20px; }
-    .news-popup { background:#fff; border:1px solid #ccc; padding:15px; border-radius:8px; margin-bottom:20px; }
-    .news-boxes { display:flex; flex-wrap:wrap; gap:15px; }
-    .news-box { background:white; border:1px solid #ccc; padding:15px; border-radius:8px; width:200px; }
-    #donateBtn { position:fixed; bottom:20px; right:20px; background:#007bff; color:white; padding:15px 20px; border:none; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2); }
-    .donation-card { border:1px solid #ccc; border-radius:8px; padding:15px; margin:10px 0; background:white; }
-    .accept { background:#4CAF50;color:white; margin-right:5px; }
-    .decline { background:#f44336;color:white; }
-    .status { font-weight:bold; }
-    .available { color:green; }
-    .pending { color:orange; }
-    .closed { color:gray; }
+    /* Global Styles */
+    body { 
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif; 
+      margin: 0; 
+      background-color: #fdfdfd; 
+      color: #333;
+    }
+
+    /* Navbar Styling */
+    header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 15px 40px; 
+      background: white; 
+      border-bottom: 1px solid #eee; 
+    }
+    header h1 { 
+      margin: 0; 
+      font-size: 22px; 
+      font-weight: 800; 
+      color: #1a1a1a; 
+      cursor: pointer;
+    }
+    header h1 span { color: #38a169; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    #profile { 
+      cursor: pointer; 
+      font-size: 14px; 
+      font-weight: 600;
+      color: #4a5568;
+      background: #f1f5f9;
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
+
+    /* Tab Navigation */
+    .tab-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 30px 0;
+    }
+    .btn-tab {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s;
+    }
+    .btn-active { background: #38a169; color: white; border-color: #38a169; }
+    .btn-inactive { background: #f1f5f9; color: #475569; }
+    .btn-tab:hover:not(.btn-active) { background: #e2e8f0; }
+
+    /* Main Content Layout */
+    main { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 20px; 
+    }
+
+    /* News/Campaign Section */
+    .news-popup { 
+      background: white; 
+      border: 1px solid #edf2f7; 
+      padding: 25px; 
+      border-radius: 12px; 
+      margin-bottom: 30px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .news-popup h3 { margin-top: 0; color: #1a1a1a; }
+    
+    .news-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+    .news-box { 
+      background: white; 
+      border: 1px solid #edf2f7; 
+      padding: 15px; 
+      border-radius: 10px; 
+      font-size: 14px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    /* Donation Cards */
+    .donation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .donation-card { 
+      background: white; 
+      border: 1px solid #edf2f7; 
+      border-radius: 12px; 
+      padding: 20px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+    .donation-card:hover { transform: translateY(-3px); }
+    .donation-card p { margin: 8px 0; font-size: 14px; color: #4a5568; }
+    .donation-card b { color: #1a1a1a; font-size: 16px; }
+
+    /* Status & Buttons */
+    .status { 
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+    .available { background: #dcfce7; color: #166534; }
+    .pending { background: #fef9c3; color: #854d0e; }
+    .closed { background: #f1f5f9; color: #475569; }
+
+    .action-btns { display: flex; gap: 10px; margin-top: 15px; }
+    .btn-action { 
+      flex: 1; 
+      padding: 10px; 
+      border: none; 
+      border-radius: 6px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      font-size: 13px;
+    }
+    .accept { background: #38a169; color: white; }
+    .decline { background: #fee2e2; color: #991b1b; }
+
+    /* History Modal (Profile Dropdown) */
+    #historyModal { 
+      display: none; 
+      position: absolute; 
+      top: 50px; 
+      right: 0; 
+      background: white; 
+      border: 1px solid #e2e8f0; 
+      padding: 20px; 
+      border-radius: 12px; 
+      width: 320px; 
+      max-height: 450px; 
+      overflow-y: auto; 
+      z-index: 100; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>V Link 🌍</h1>
-  <div id="profile">Profile ▼
-    <div id="historyModal"></div>
+  <h1 onclick="location.reload()"><span>💚</span> V-Link</h1>
+  <div class="nav-right">
+    <div id="profile">Profile ▼
+      <div id="historyModal"></div>
+    </div>
+    <button class="btn-tab btn-inactive" onclick="auth.signOut()" style="border:none">Logout</button>
   </div>
 </header>
+
+<div class="tab-container" id="donorTabs" style="display:none;">
+  <div class="btn-tab btn-active">Feed</div>
+  <div class="btn-tab btn-inactive" onclick="window.location.href='donor.html'">+ New Donation</div>
+</div>
 
 <main>
   <div id="mainContent"></div>
 </main>
 
-<button id="donateBtn">Donate 🍱</button>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -60,11 +196,14 @@ let userArea;
 const profileDiv = document.getElementById("profile");
 const historyModal = document.getElementById("historyModal");
 const mainContent = document.getElementById("mainContent");
-const donateBtn = document.getElementById("donateBtn");
 
-profileDiv.onclick = () => {
+profileDiv.onclick = (e) => {
+  e.stopPropagation();
   historyModal.style.display = historyModal.style.display === "block" ? "none" : "block";
 };
+
+document.onclick = () => { historyModal.style.display = "none"; };
+historyModal.onclick = (e) => { e.stopPropagation(); };
 
 onAuthStateChanged(auth, async user => {
   if(!user){ window.location.href="login.html"; return; }
@@ -77,11 +216,10 @@ onAuthStateChanged(auth, async user => {
   }
 
   if(userRole === "donor"){
-    donateBtn.style.display="block";
+    document.getElementById("donorTabs").style.display = "flex";
     loadDonorHistory();
     loadNews();
   } else if(userRole === "ngo"){
-    donateBtn.style.display="none";
     loadNGODonations();
   }
 });
@@ -89,14 +227,13 @@ onAuthStateChanged(auth, async user => {
 function loadDonorHistory(){
   const q = query(collection(db,"donations"), where("donorId","==",currentUser.uid));
   onSnapshot(q,snapshot=>{
-    historyModal.innerHTML="<h3>Donation History</h3>";
+    historyModal.innerHTML="<h3 style='margin-top:0'>Your Donations</h3>";
     snapshot.forEach(docSnap=>{
       const d = docSnap.data();
       historyModal.innerHTML+=`
-        <div class="donation-card">
-          <p><b>${d.foodName}</b> (${d.foodType})</p>
-          <p>Servings: ${d.servings}</p>
-          <p>Status: <span class="status ${d.status}">${d.status}</span></p>
+        <div class="donation-card" style="margin-bottom:10px; padding:12px;">
+          <p><b>${d.foodName}</b></p>
+          <span class="status ${d.status}">${d.status}</span>
         </div>
       `;
     });
@@ -106,13 +243,13 @@ function loadDonorHistory(){
 function loadNews(){
   mainContent.innerHTML = `
     <div class="news-popup">
-      <h3>Latest Campaign!</h3>
-      <p>Check out upcoming NGO events and community drives.</p>
+      <h3>Latest Campaigns 📢</h3>
+      <p>Check out upcoming NGO events and community drives in your city.</p>
     </div>
     <div class="news-boxes">
-      <div class="news-box"><b>NGO A:</b> Food Camp on Sat</div>
-      <div class="news-box"><b>NGO B:</b> Clothes Drive</div>
-      <div class="news-box"><b>Company C:</b> Donation Matching Program</div>
+      <div class="news-box"><b>NGO Green:</b> Weekend Food Camp</div>
+      <div class="news-box"><b>Area Drive:</b> Winter Clothes Collection</div>
+      <div class="news-box"><b>Notice:</b> New NGO joined in ${userArea || 'your area'}</div>
     </div>
   `;
 }
@@ -120,18 +257,23 @@ function loadNews(){
 function loadNGODonations(){
   const q = query(collection(db,"donations"), where("status","==","available"), where("area","==",userArea));
   onSnapshot(q,snapshot=>{
-    mainContent.innerHTML="<h2>Available Donations in Your Area</h2>";
+    mainContent.innerHTML="<h2 style='margin-bottom:25px'>Available Near You</h2><div class='donation-grid' id='grid'></div>";
+    const grid = document.getElementById("grid");
+    if(snapshot.empty) grid.innerHTML = "<p>No donations available in your area right now.</p>";
+    
     snapshot.forEach(docSnap=>{
       const d = docSnap.data();
       const id = docSnap.id;
-      mainContent.innerHTML+=`
+      grid.innerHTML+=`
         <div class="donation-card">
-          <p><b>${d.foodName}</b> (${d.foodType})</p>
-          <p>Servings: ${d.servings}</p>
-          <p>Time: ${d.timePrep}</p>
-          <p>Area: ${d.area}</p>
-          <button class="accept" onclick="acceptDonation('${id}')">Accept</button>
-          <button class="decline" onclick="declineDonation('${id}')">Decline</button>
+          <p><b>${d.foodName}</b> <span style="font-size:12px; color:#38a169">(${d.foodType})</span></p>
+          <p>📍 ${d.area}</p>
+          <p>🍱 Servings: ${d.servings}</p>
+          <p>⏰ Prep: ${d.timePrep}</p>
+          <div class="action-btns">
+            <button class="btn-action accept" onclick="acceptDonation('${id}')">Accept</button>
+            <button class="btn-action decline" onclick="declineDonation('${id}')">Decline</button>
+          </div>
         </div>
       `;
     });
@@ -145,10 +287,8 @@ window.acceptDonation = async function(id){
 
 window.declineDonation = async function(id){
   await updateDoc(doc(db,"donations",id),{status:"closed"});
-  alert("Donation declined ❌");
+  alert("Donation marked as closed.");
 }
-
-donateBtn.onclick = () => { window.location.href="donor.html"; }
 </script>
 </body>
 </html>
