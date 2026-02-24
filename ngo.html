@@ -1,19 +1,200 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NGO Dashboard - V Link</title>
-  <style>
-    body { font-family: Arial; padding:20px; background:#f0f2f5; }
-    .donation-card { border:1px solid #ccc; border-radius:8px; padding:15px; margin:10px; background:white; }
-    button { margin:5px; padding:5px 10px; border:none; border-radius:5px; cursor:pointer; }
-    .accept { background:#4CAF50;color:white; }
-    .decline { background:#f44336;color:white; }
-  </style>
+    <title>NGO Dashboard - V Link</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Modern Reset & Theme */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: #fdfdfd; 
+            margin: 0;
+            color: #333;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a1a1a;
+            gap: 8px;
+        }
+        .nav-logo span { color: #38a169; }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+        }
+        .role-badge {
+            background: #f3f4f1;
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: #444;
+            font-weight: 500;
+        }
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: #444;
+            text-decoration: none;
+        }
+
+        /* Dashboard Header */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .dash-header h1 {
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            color: #1a1a1a;
+        }
+        .dash-header p {
+            color: #718096;
+            margin: 0 0 40px 0;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .filter-section h2 {
+            font-size: 20px;
+            margin: 0;
+        }
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        /* Donation Card Styling */
+        .donation-card { 
+            background: white; 
+            border-radius: 16px; 
+            border: 1px solid #edf2f7;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .card-body { padding: 25px; position: relative; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: flex-start; }
+        
+        .food-title { font-size: 20px; font-weight: 800; margin: 0; text-transform: uppercase; }
+        .donor-name { color: #718096; font-size: 14px; margin: 4px 0 15px 0; }
+        
+        .status-badge {
+            background: #dcfce7;
+            color: #38a169;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .info-row { display: flex; align-items: center; gap: 10px; color: #4a5568; margin-bottom: 8px; font-size: 15px; }
+        .info-icon { width: 20px; color: #a0aec0; }
+
+        /* Map Placeholder */
+        .map-box {
+            width: 100%;
+            height: 180px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=Chennai&zoom=13&size=600x200&sensor=false'); /* Placeholder */
+            background-size: cover;
+            border-top: 1px solid #edf2f7;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        /* Card Actions */
+        .card-footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px 25px;
+        }
+        .btn {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-accept { background: #38a169; color: white; }
+        .btn-accept:hover { background: #2f855a; }
+        .btn-decline { background: #f1f1e8; color: #4a5568; }
+        .btn-decline:hover { background: #e2e8f0; }
+
+    </style>
 </head>
 <body>
 
-<h2>Available Donations in Your Area 📦</h2>
-<div id="donationList"></div>
+    <nav class="navbar">
+        <div class="nav-logo"><span>💚</span> V-Link</div>
+        <div class="nav-right">
+            <span class="role-badge">Ngo</span>
+            <span id="userName" style="font-weight:600">User</span>
+            <a href="#" class="logout-btn" onclick="auth.signOut()">
+                <span>🚪</span> Logout
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="dash-header">
+            <h1>NGO Dashboard</h1>
+            <p>Browse and accept available food donations</p>
+        </div>
+
+        <div class="filter-section">
+            <h2 id="countLabel">Available Donations (0)</h2>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Filter by location...">
+            </div>
+        </div>
+
+        <div id="donationList">
+            </div>
+    </main>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -21,9 +202,9 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { getFirestore, collection, doc, getDoc, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
-  authDomain: "v-link-bc049.firebaseapp.com",
-  projectId: "v-link-bc049",
+    apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
+    authDomain: "v-link-bc049.firebaseapp.com",
+    projectId: "v-link-bc049",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -33,25 +214,84 @@ const db = getFirestore(app);
 let ngoArea="";
 let currentUser;
 
-onAuthStateChanged(auth,user=>{
-  if(!user){ window.location.href="login.html"; return; }
-  currentUser=user;
+onAuthStateChanged(auth, user => {
+    if(!user){ window.location.href="login.html"; return; }
+    currentUser = user;
+    
+    getDoc(doc(db,"users",user.uid)).then(ngoDoc => {
+        if(ngoDoc.exists()) {
+            ngoArea = ngoDoc.data().area.trim().toLowerCase();
+            document.getElementById("userName").innerText = user.email.split('@')[0].toUpperCase();
+            loadDonations();
+        }
+    });
+});
 
-  getDoc(doc(db,"users",user.uid)).then(ngoDoc=>{
-    if(ngoDoc.exists()) ngoArea = ngoDoc.data().area.trim().toLowerCase();
-
+function loadDonations() {
     const q = query(collection(db,"donations"), where("status","==","available"), where("area","==",ngoArea));
 
-    onSnapshot(q,snapshot=>{
-      const donationList = document.getElementById("donationList");
-      donationList.innerHTML="";
-      snapshot.forEach(docSnap=>{
-        const data = docSnap.data();
-        const id = docSnap.id;
-        donationList.innerHTML+=`
-          <div class="donation-card">
-            <h3>${data.foodName}</h3>
-            <p><b>Type:</b> ${data.foodType}</p>
-            <p><b>Servings:</b> ${data.servings}</p>
-            <p><b>Time:</b> ${data.timePrep}</p>
-            <p><b>Area:</b> ${data.area}</p>
+    onSnapshot(q, snapshot => {
+        const donationList = document.getElementById("donationList");
+        document.getElementById("countLabel").innerText = `Available Donations (${snapshot.size})`;
+        donationList.innerHTML = "";
+
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const id = docSnap.id;
+            
+            donationList.innerHTML += `
+                <div class="donation-card">
+                    <div class="card-body">
+                        <div class="card-header-flex">
+                            <div>
+                                <h3 class="food-title">${data.foodName}</h3>
+                                <p class="donor-name">by Donor</p>
+                            </div>
+                            <span class="status-badge">Available</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-icon">📦</span>
+                            <span>${data.servings} servings</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">📍</span>
+                            <span>${data.area.toUpperCase()}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">⏰</span>
+                            <span>${data.timePrep || 'Now'}</span>
+                        </div>
+                    </div>
+
+                    <div class="map-box"></div>
+
+                    <div class="card-footer">
+                        <button class="btn btn-accept" onclick="acceptDonation('${id}')">
+                            <span>✓</span> Accept
+                        </button>
+                        <button class="btn btn-decline" onclick="declineDonation('${id}')">
+                            <span>✕</span> Decline
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    });
+}
+
+window.acceptDonation = async function(id) {
+    if(confirm("Accept this donation?")) {
+        await updateDoc(doc(db,"donations",id), {status:"pending", acceptedBy: currentUser.uid});
+        alert("Donation accepted! Check your history for details. ✅");
+    }
+}
+
+window.declineDonation = async function(id) {
+    if(confirm("Ignore this donation?")) {
+        await updateDoc(doc(db,"donations",id), {status:"declined"});
+    }
+}
+</script>
+</body>
+</html>
