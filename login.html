@@ -1,103 +1,253 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login / Register - V Link</title>
-  <style>
-    body { font-family: Arial; padding: 20px; background:#f0f2f5; text-align:center; }
-    h2 { color:#333; }
-    input, select, button { padding:10px; margin:5px 0; width:250px; border-radius:5px; border:1px solid #ccc; }
-    button { width:260px; background:#4CAF50; color:white; border:none; cursor:pointer; }
-    button:hover { background:#45a049; }
-    #areaDiv { display:none; margin-top:10px; }
-  </style>
+    <title>V-Link | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* General Styling */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: #fdfdfd; 
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Branding Header */
+        .brand-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .brand-logo {
+            color: #38a169;
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+        .brand-name {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+            color: #1a1a1a;
+        }
+        .brand-tagline {
+            color: #666;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
+        /* The Login Card */
+        .card { 
+            background: white; 
+            padding: 40px; 
+            width: 100%;
+            max-width: 420px; 
+            border-radius: 16px; 
+            border: 1px solid #edf2f7;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* Input Formatting */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            border: 1px solid #e2e8f0; 
+            background-color: #f8fafc;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #38a169;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+        }
+
+        /* Buttons */
+        .btn-login { 
+            width: 100%;
+            padding: 14px;
+            background: #38a169; 
+            color: white; 
+            font-weight: 700; 
+            font-size: 16px;
+            cursor: pointer; 
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover { background: #2f855a; }
+
+        .register-text {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .btn-register {
+            background: none;
+            border: none;
+            color: #38a169;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .btn-register:hover {
+            text-decoration: underline;
+        }
+
+        #areaDiv { display: none; }
+    </style>
 </head>
 <body>
 
-<h2>V Link Login / Register</h2>
+    <div class="brand-section">
+        <div class="brand-logo">💚</div>
+        <h1 class="brand-name">V-Link</h1>
+        <p class="brand-tagline">Connecting surplus food with those in need</p>
+    </div>
 
-<input type="email" id="email" placeholder="Enter Email"><br>
-<input type="password" id="password" placeholder="Enter Password"><br>
+    <div class="card">
+        <h2>Welcome Back</h2>
+        <div class="subtitle">Sign in to continue</div>
 
-<label>Select Role:</label><br>
-<select id="role" onchange="toggleAreaField()">
-  <option value="donor">Donor</option>
-  <option value="ngo">NGO</option>
-</select><br>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com">
+        </div>
 
-<div id="areaDiv">
-  <input type="text" id="ngoArea" placeholder="Enter your city / area"><br>
-</div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
 
-<button onclick="register()">Register</button><br>
-<button onclick="login()">Login</button>
+        <div class="input-group">
+            <label for="role">I am a...</label>
+            <select id="role" onchange="toggleAreaField()">
+                <option value="donor">Donor</option>
+                <option value="ngo">NGO</option>
+            </select>
+        </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        <div id="areaDiv" class="input-group">
+            <label for="ngoArea">City / Area</label>
+            <input type="text" id="ngoArea" placeholder="e.g. New York">
+        </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
-  authDomain: "v-link-bc049.firebaseapp.com",
-  projectId: "v-link-bc049",
-};
+        <button class="btn-login" onclick="login()">Sign In</button>
+        
+        <div class="register-text">
+            Don't have an account? 
+            <button class="btn-register" onclick="register()">Register</button>
+        </div>
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-window.toggleAreaField = function(){
-  const role = document.getElementById("role").value;
-  document.getElementById("areaDiv").style.display = role === "ngo" ? "block" : "none";
-}
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
+            authDomain: "v-link-bc049.firebaseapp.com",
+            projectId: "v-link-bc049",
+        };
 
-window.register = async function () {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const role = document.getElementById("role").value;
-  const ngoArea = document.getElementById("ngoArea").value.trim();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-  if (!email || !password) { alert("Please enter email and password."); return; }
-  if (role === "ngo" && !ngoArea) { alert("NGO must enter area / city"); return; }
+        window.toggleAreaField = function(){
+            const role = document.getElementById("role").value;
+            document.getElementById("areaDiv").style.display = role === "ngo" ? "block" : "none";
+        }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth,email,password);
-    const user = userCredential.user;
+        window.register = async function () {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const role = document.getElementById("role").value;
+            const ngoArea = document.getElementById("ngoArea").value.trim();
 
-    await setDoc(doc(db,"users",user.uid),{
-      email: email,
-      role: role,
-      area: role==="ngo"?ngoArea.toLowerCase():""
-    });
+            if (!email || !password) { alert("Please enter email and password."); return; }
+            if (role === "ngo" && !ngoArea) { alert("NGO must enter area / city"); return; }
 
-    alert("Registered successfully 🎉");
-    document.getElementById("email").value="";
-    document.getElementById("password").value="";
-    if(role==="ngo") document.getElementById("ngoArea").value="";
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-  } catch(error){
-    alert(error.message);
-  }
-}
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email,
+                    role: role,
+                    area: role === "ngo" ? ngoArea.toLowerCase() : ""
+                });
 
-window.login = async function () {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  if(!email || !password){ alert("Enter email/password"); return; }
+                alert("Registered successfully 🎉");
+                document.getElementById("email").value = "";
+                document.getElementById("password").value = "";
+                if(role === "ngo") document.getElementById("ngoArea").value = "";
 
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth,email,password);
-    const user = userCredential.user;
+            } catch (error) {
+                alert(error.message);
+            }
+        }
 
-    const docSnap = await getDoc(doc(db,"users",user.uid));
-    if(docSnap.exists()){
-      const role = docSnap.data().role;
-      // redirect both roles to index.html
-      window.location.href="index.html";
-    }else alert("User role not found");
+        window.login = async function () {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            if (!email || !password) { alert("Enter email/password"); return; }
 
-  } catch(error){ alert(error.message); }
-}
-</script>
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                if (docSnap.exists()) {
+                    window.location.href = "index.html";
+                } else {
+                    alert("User role not found");
+                }
+
+            } catch (error) { 
+                alert(error.message); 
+            }
+        }
+    </script>
 </body>
 </html>
