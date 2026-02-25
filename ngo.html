@@ -4,294 +4,204 @@
     <title>NGO Dashboard - V Link</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Modern Reset & Theme */
         body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background-color: #fdfdfd; 
-            margin: 0;
-            color: #333;
+            margin: 0; color: #333; 
         }
-
-        /* Navbar Styling */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 40px;
-            background: white;
-            border-bottom: 1px solid #eee;
+        .navbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 40px; 
+            background: white; 
+            border-bottom: 1px solid #eee; 
         }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #1a1a1a;
-            gap: 8px;
+        .nav-logo { 
+            display: flex; 
+            align-items: center; 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: #1a1a1a; 
+            gap: 8px; 
         }
-        .nav-logo span { color: #38a169; }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 14px;
+        .nav-logo span { 
+            color: #38a169; 
         }
-        .role-badge {
-            background: #f3f4f1;
-            padding: 6px 16px;
-            border-radius: 20px;
-            color: #444;
-            font-weight: 500;
+        .btn-logout { background: #f3f4f1; 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 500; 
         }
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            color: #444;
-            text-decoration: none;
+        main { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
         }
-
-        /* Dashboard Header */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .dash-header h1 {
-            font-size: 28px;
-            margin: 0 0 8px 0;
-            color: #1a1a1a;
-        }
-        .dash-header p {
-            color: #718096;
-            margin: 0 0 40px 0;
-        }
-
-        /* Filter Section */
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .filter-section h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-        .search-container {
-            position: relative;
-            width: 300px;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-        }
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a0aec0;
-        }
-
-        /* Donation Card Styling */
         .donation-card { 
             background: white; 
             border-radius: 16px; 
-            border: 1px solid #edf2f7;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            margin-bottom: 30px;
-            overflow: hidden;
+            border: 1px solid #edf2f7; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            margin-bottom: 30px; 
+            overflow: hidden; 
         }
-        .card-body { padding: 25px; position: relative; }
-        .card-header-flex { display: flex; justify-content: space-between; align-items: flex-start; }
-        
-        .food-title { font-size: 20px; font-weight: 800; margin: 0; text-transform: uppercase; }
-        .donor-name { color: #718096; font-size: 14px; margin: 4px 0 15px 0; }
-        
-        .status-badge {
-            background: #dcfce7;
-            color: #38a169;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
+        .card-body { 
+            padding: 25px; 
         }
-
-        .info-row { display: flex; align-items: center; gap: 10px; color: #4a5568; margin-bottom: 8px; font-size: 15px; }
-        .info-icon { width: 20px; color: #a0aec0; }
-
-        /* Map Placeholder */
-        .map-box {
-            width: 100%;
-            height: 180px;
-            background: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=Chennai&zoom=13&size=600x200&sensor=false'); /* Placeholder */
-            background-size: cover;
-            border-top: 1px solid #edf2f7;
-            border-bottom: 1px solid #edf2f7;
+        .status-badge { 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            float: right; 
         }
-
-        /* Card Actions */
-        .card-footer {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px 25px;
+        .st-available {
+             background: #dcfce7; 
+             color: #38a169; 
+            }
+        .st-pending { 
+            background: #fef9c3; 
+            color: #854d0e; 
         }
-        .btn {
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
+        .map-box { 
+            width: 100%; 
+            height: 180px; 
+            background: #e5e7eb; 
+            border-top: 1px solid #edf2f7; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
-        .btn-accept { background: #38a169; color: white; }
-        .btn-accept:hover { background: #2f855a; }
-        .btn-decline { background: #f1f1e8; color: #4a5568; }
-        .btn-decline:hover { background: #e2e8f0; }
-
+        .map-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .card-footer { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            padding: 20px; 
+        }
+        .btn { 
+            padding: 12px; 
+            border-radius: 10px; 
+            border: none; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.2s; 
+        }
+        .btn-accept { 
+            background: #38a169; 
+            color: white; 
+        }
+        .btn-collect { 
+            background: #ffa500; 
+            color: white; 
+            grid-column: span 2; 
+        }
+        .btn-decline { 
+            background: #f1f1e8; 
+            color: #4a5568; 
+        }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="nav-logo"><span>💚</span> V-Link</div>
-        <div class="nav-right">
-            <span class="role-badge">Ngo</span>
-            <span id="userName" style="font-weight:600">User</span>
-            <a href="#" class="logout-btn" onclick="auth.signOut()">
-                <span>🚪</span> Logout
-            </a>
+        <div>
+            <span id="ngoName" style="margin-right: 15px; font-weight: 600;"></span>
+            <button class="btn-logout" onclick="logout()">Logout</button>
         </div>
     </nav>
-
     <main>
-        <div class="dash-header">
-            <h1>NGO Dashboard</h1>
-            <p>Browse and accept available food donations</p>
-        </div>
-
-        <div class="filter-section">
-            <h2 id="countLabel">Available Donations (0)</h2>
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Filter by location...">
-            </div>
-        </div>
-
-        <div id="donationList">
-            </div>
+        <h1>NGO Dashboard</h1>
+        <p id="areaLabel">Browsing donations in...</p>
+        <div id="donationList"></div>
     </main>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, query, where, onSnapshot, updateDoc, or } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
-    authDomain: "v-link-bc049.firebaseapp.com",
-    projectId: "v-link-bc049",
-};
+    const firebaseConfig = { apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU", authDomain: "v-link-bc049.firebaseapp.com", projectId: "v-link-bc049" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let ngoArea="";
-let currentUser;
-
-onAuthStateChanged(auth, user => {
-    if(!user){ window.location.href="login.html"; return; }
-    currentUser = user;
-    
-    getDoc(doc(db,"users",user.uid)).then(ngoDoc => {
-        if(ngoDoc.exists()) {
-            ngoArea = ngoDoc.data().area.trim().toLowerCase();
-            document.getElementById("userName").innerText = user.email.split('@')[0].toUpperCase();
-            loadDonations();
+    onAuthStateChanged(auth, async user => {
+        if (!user) window.location.href = "login.html";
+        else {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const area = userDoc.data().area.toLowerCase();
+                document.getElementById("ngoName").innerText = user.email.split('@')[0].toUpperCase();
+                document.getElementById("areaLabel").innerText = `Available donations in ${area.toUpperCase()}`;
+                loadDonations(area, user.uid);
+            }
         }
     });
-});
 
-function loadDonations() {
-    const q = query(collection(db,"donations"), where("status","==","available"), where("area","==",ngoArea));
+    function loadDonations(ngoArea, uid) {
+        // Show both 'available' and 'pending' (accepted by this NGO)
+        const q = query(collection(db, "donations"), 
+            where("area", "==", ngoArea)
+        );
 
-    onSnapshot(q, snapshot => {
-        const donationList = document.getElementById("donationList");
-        document.getElementById("countLabel").innerText = `Available Donations (${snapshot.size})`;
-        donationList.innerHTML = "";
+        onSnapshot(q, snap => {
+            const list = document.getElementById("donationList");
+            list.innerHTML = "";
+            snap.forEach(docSnap => {
+                const data = docSnap.data();
+                const id = docSnap.id;
 
-        snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            const id = docSnap.id;
-            
-            donationList.innerHTML += `
-                <div class="donation-card">
-                    <div class="card-body">
-                        <div class="card-header-flex">
-                            <div>
-                                <h3 class="food-title">${data.foodName}</h3>
-                                <p class="donor-name">by Donor</p>
+                // Condition: Box only shows if status is Available OR Pending (and accepted by this specific user)
+                if (data.status === "available" || (data.status === "pending" && data.acceptedBy === uid)) {
+                    const isPending = data.status === "pending";
+                    
+                    list.innerHTML += `
+                        <div class="donation-card">
+                            <div class="card-body">
+                                <span class="status-badge ${isPending ? 'st-pending' : 'st-available'}">${data.status}</span>
+                                <h3 style="margin:0">${data.foodName}</h3>
+                                <p>📦 ${data.servings} servings | ⏰ ${data.timePrep || 'Now'}</p>
                             </div>
-                            <span class="status-badge">Available</span>
-                        </div>
-
-                        <div class="info-row">
-                            <span class="info-icon">📦</span>
-                            <span>${data.servings} servings</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-icon">📍</span>
-                            <span>${data.area.toUpperCase()}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-icon">⏰</span>
-                            <span>${data.timePrep || 'Now'}</span>
-                        </div>
-                    </div>
-
-                    <div class="map-box"></div>
-
-                    <div class="card-footer">
-                        <button class="btn btn-accept" onclick="acceptDonation('${id}')">
-                            <span>✓</span> Accept
-                        </button>
-                        <button class="btn btn-decline" onclick="declineDonation('${id}')">
-                            <span>✕</span> Decline
-                        </button>
-                    </div>
-                </div>
-            `;
+                            <div class="map-box">
+                                <img class="map-img" src="https://media.wired.com/photos/59269cd37034dc5f91bec0f1/191:100/w_1280,c_limit/GoogleMapTA.jpg" alt="Fake Map">
+                            </div>
+                            <div class="card-footer">
+                                ${!isPending ? `
+                                    <button class="btn btn-accept" onclick="acceptDonation('${id}', '${uid}')">Accept</button>
+                                    <button class="btn btn-decline" onclick="declineDonation('${id}')">Decline</button>
+                                ` : `
+                                    <button class="btn btn-collect" onclick="collectDonation('${id}')">Mark as Collected 📦</button>
+                                `}
+                            </div>
+                        </div>`;
+                }
+            });
+            if (!list.innerHTML) list.innerHTML = "<p>No active tasks in your area.</p>";
         });
-    });
-}
-
-window.acceptDonation = async function(id) {
-    if(confirm("Accept this donation?")) {
-        await updateDoc(doc(db,"donations",id), {status:"pending", acceptedBy: currentUser.uid});
-        alert("Donation accepted! Check your history for details. ✅");
     }
-}
 
-window.declineDonation = async function(id) {
-    if(confirm("Ignore this donation?")) {
-        await updateDoc(doc(db,"donations",id), {status:"declined"});
+    window.acceptDonation = async (id, uid) => {
+        if(confirm("Accept this task?")) {
+            await updateDoc(doc(db, "donations", id), { status: "pending", acceptedBy: uid });
+        }
     }
-}
+
+    window.collectDonation = async (id) => {
+        if(confirm("Have you collected this food? It will disappear from your feed.")) {
+            await updateDoc(doc(db, "donations", id), { status: "donated" }); // Changes status to donated (finished)
+        }
+    }
+
+    window.declineDonation = async (id) => { if(confirm("Ignore?")) await updateDoc(doc(db, "donations", id), { status: "closed" }); }
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html");
 </script>
 </body>
 </html>
