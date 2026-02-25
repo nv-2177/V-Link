@@ -1,278 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Donor Dashboard - V Link</title>
+    <title>Donate Food - V Link</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Modern Reset & Theme */
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background-color: #fdfdfd; 
-            margin: 0;
-            color: #333;
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            background: white;
-            border-bottom: 1px solid #eee;
-        }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #1a1a1a;
-            gap: 8px;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #fdfdfd; margin: 0; color: #333; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: white; border-bottom: 1px solid #eee; }
+        .nav-logo { display: flex; align-items: center; font-size: 22px; font-weight: 800; color: #1a1a1a; gap: 8px; }
         .nav-logo span { color: #38a169; }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 14px;
-        }
-        .role-badge {
-            background: #f1f5f9;
-            padding: 5px 12px;
-            border-radius: 20px;
-            color: #475569;
-        }
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            color: #444;
-            text-decoration: none;
-        }
-
-        /* Tab Buttons */
-        .tab-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 30px 0;
-        }
-        .btn-tab {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid transparent;
-            font-size: 14px;
-        }
-        .btn-active {
-            background: #38a169;
-            color: white;
-        }
-        .btn-inactive {
-            background: #f1f5f9;
-            color: #475569;
-            border-color: #e2e8f0;
-        }
-
-        /* Form Card */
-        .main-content {
-            display: flex;
-            justify-content: center;
-            padding-bottom: 50px;
-        }
-        .card { 
-            background: white; 
-            padding: 40px; 
-            width: 100%;
-            max-width: 600px; 
-            border-radius: 16px; 
-            border: 1px solid #edf2f7;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            box-sizing: border-box;
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .card-subtitle {
-            color: #718096;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        /* Form Elements */
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #4a5568;
-        }
-        input, select { 
-            width: 100%; 
-            padding: 14px 16px; 
-            border-radius: 8px; 
-            border: 1px solid #e2e8f0; 
-            background-color: #f8fafc;
-            font-size: 15px;
-            box-sizing: border-box;
-            transition: all 0.2s ease;
-        }
-        input:focus {
-            outline: none;
-            border-color: #38a169;
-            background-color: white;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: #38a169;
-            color: white;
-            font-weight: 700;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s;
-        }
+        .main-content { display: flex; justify-content: center; padding: 40px 20px; }
+        .card { background: white; padding: 40px; width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid #edf2f7; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .form-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #4a5568; }
+        input, select { width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background-color: #f8fafc; font-size: 15px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 14px; background: #38a169; color: white; font-weight: 700; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.2s; }
         .btn-submit:hover { background: #2f855a; }
-
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="nav-logo"><span>💚</span> V-Link</div>
-        <div class="nav-right">
-            <span class="role-badge">Donor</span>
-            <span id="userEmail" style="color:#64748b">User</span>
-            <a href="#" class="logout-btn" onclick="auth.signOut()">
-                <span>🚪</span> Logout
-            </a>
-        </div>
+        <button onclick="window.location.href='index.html'" style="border:none; background:none; cursor:pointer; color:#38a169; font-weight:600;">← Back</button>
     </nav>
-
-    <div class="tab-container">
-        <div class="btn-tab btn-active"><span>+</span> New Donation</div>
-        <div class="btn-tab btn-inactive" onclick="window.location.href='history.html'"><span>🕒</span> History</div>
-    </div>
-
     <div class="main-content">
         <div class="card">
-            <div class="card-header">
-                <span style="color:#38a169">🥗</span> Donate Food
-            </div>
-            <div class="card-subtitle">Fill in the details of your food donation</div>
-
+            <h2>🥗 Donate Food</h2>
             <div class="form-group">
                 <label>Food Category *</label>
-                <select id="foodType">
-                    <option value="Veg">Veg</option>
-                    <option value="Non-Veg">Non-Veg</option>
-                </select>
+                <select id="foodType"><option value="Veg">Veg</option><option value="Non-Veg">Non-Veg</option></select>
             </div>
-
-            <div class="form-group">
-                <label>Food Name *</label>
-                <input type="text" id="foodName" placeholder="e.g., Rice, Bread, Cooked Meals">
-            </div>
-
-            <div class="form-group">
-                <label>Quantity (servings) *</label>
-                <input type="number" id="servings" placeholder="e.g., 50">
-            </div>
-
-            <div class="form-group">
-                <label>Location (area/city) *</label>
-                <input type="text" id="donorArea" placeholder="e.g., Downtown, New York">
-            </div>
-
-            <div class="form-group">
-                <label>Pickup Time (optional)</label>
-                <input type="time" id="timePrep">
-            </div>
-
+            <div class="form-group"><label>Food Name *</label><input type="text" id="foodName" placeholder="e.g., Rice, Bread"></div>
+            <div class="form-group"><label>Quantity (servings) *</label><input type="number" id="servings" placeholder="e.g., 50"></div>
+            <div class="form-group"><label>Location (area/city) *</label><input type="text" id="donorArea" placeholder="e.g., Downtown"></div>
+            <div class="form-group"><label>Pickup Time (optional)</label><input type="time" id="timePrep"></div>
             <button class="btn-submit" onclick="submitDonation()">Submit Donation</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU",
-            authDomain: "v-link-bc049.firebaseapp.com",
-            projectId: "v-link-bc049",
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyBUegWQrrwgo170yFx68ZcFx7r8TPSujYU", authDomain: "v-link-bc049.firebaseapp.com", projectId: "v-link-bc049" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let currentUser;
+        let uid;
+        onAuthStateChanged(auth, user => { if (!user) window.location.href = "login.html"; else uid = user.uid; });
 
-        onAuthStateChanged(auth, user => {
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                currentUser = user;
-                document.getElementById("userEmail").innerText = user.email.split('@')[0].toUpperCase();
-            }
-        });
-
-        window.submitDonation = async function() {
-            const foodType = document.getElementById("foodType").value;
+        window.submitDonation = async () => {
             const foodName = document.getElementById("foodName").value.trim();
             const servings = document.getElementById("servings").value;
-            const timePrep = document.getElementById("timePrep").value;
             const donorArea = document.getElementById("donorArea").value.trim().toLowerCase();
-
-            if (!foodName || !servings || !donorArea) { 
-                alert("Please fill all required fields (*)"); 
-                return; 
-            }
-
+            if (!foodName || !servings || !donorArea) return alert("Fill required fields.");
             try {
-                const btn = document.querySelector(".btn-submit");
-                btn.innerText = "Submitting...";
-                btn.disabled = true;
-
                 await addDoc(collection(db, "donations"), {
-                    donorId: currentUser.uid,
-                    foodType,
-                    foodName,
-                    servings: Number(servings),
-                    timePrep,
-                    area: donorArea,
-                    status: "available",
-                    createdAt: serverTimestamp()
+                    donorId: uid, foodType: document.getElementById("foodType").value, foodName,
+                    servings: Number(servings), timePrep: document.getElementById("timePrep").value,
+                    area: donorArea, status: "available", createdAt: serverTimestamp()
                 });
-
-                alert("Donation Submitted Successfully 🎉");
+                alert("Donation Submitted 🎉");
                 window.location.href = "index.html";
-
-            } catch (error) { 
-                alert(error.message); 
-                document.querySelector(".btn-submit").innerText = "Submit Donation";
-                document.querySelector(".btn-submit").disabled = false;
-            }
+            } catch (error) { alert(error.message); }
         }
     </script>
 </body>
